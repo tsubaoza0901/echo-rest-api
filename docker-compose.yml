@@ -1,24 +1,24 @@
 version: '3'
 services:
-  # db:
-  #   build:
-  #     context: ./docker_files/db_mysql
-  #   container_name: teamup_db
-  #   environment:
-  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
-  #     MYSQL_USER: ${MYSQL_USER}
-  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-  #   restart: on-failure:5
-  #   ports:
-  #     - '3306:3306'
-  #   tty: true
-  #   volumes:
-  #     - ./docker_files/db_mysql/mysql_init:/docker-entrypoint-initdb.d
-  #     - ./docker_files/db_mysql/mysql_data:/var/lib/mysql
-  #   command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --skip-character-set-client-handshake
-  #   networks:
-  #     - teamupnet
+  db:
+    build:
+      context: ./docker_files/db_mysql
+    container_name: echo_db
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    restart: on-failure:5
+    ports:
+      - '3306:3306'
+    tty: true
+    volumes:
+      - ./docker_files/db_mysql/mysql_init:/docker-entrypoint-initdb.d
+      - ./docker_files/db_mysql/mysql_data:/var/lib/mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --skip-character-set-client-handshake
+    networks:
+      - echonet
   golang:
     build:
       context: ./docker_files/go
@@ -28,9 +28,9 @@ services:
     ports:
       - '9000:8080'
     tty: true
-    # depends_on:
-    #   - db
-#     networks:
-#       - teamupnet
-# networks:
-#   teamupnet:
+    depends_on:
+      - db
+    networks:
+      - echonet
+networks:
+  echonet:
