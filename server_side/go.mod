@@ -1,4 +1,4 @@
-module go-mod-test
+module github.com/tsubaoza0901/echo-rest-api
 
 go 1.13
 
