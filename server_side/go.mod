@@ -11,6 +11,8 @@ require (
 	github.com/lib/pq v1.8.0 // indirect
 	github.com/mattn/go-colorable v0.1.7 // indirect
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
+	github.com/pkg/errors v0.9.1
+	github.com/stretchr/testify v1.4.0
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	github.com/ziutek/mymysql v1.5.4 // indirect
 	golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a // indirect
