@@ -7,6 +7,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/stretchr/testify/assert"
+	"github.com/tsubaoza0901/echo-rest-api/test/mock"
 )
 
 func TestJobHandler_GetJob(t *testing.T) {
@@ -31,6 +32,9 @@ func TestJobHandler_GetJob(t *testing.T) {
 }
 
 func testJobHandlerGetJob(t *testing.T, request string, responseCode int) {
+	job := &mock.JobUseCase{}
+	h := NewJobHandler(job)
+
 	e := echo.New()
 
 	req := httptest.NewRequest(echo.GET, request, nil)
@@ -39,7 +43,7 @@ func testJobHandlerGetJob(t *testing.T, request string, responseCode int) {
 	c.SetParamNames("id")
 	c.SetParamValues("1")
 
-	if assert.NoError(t, GetJob(c)) {
+	if assert.NoError(t, h.GetJob(c)) {
 		t.Log("RESPONSECODE:", rec.Code)
 		assert.Equal(t, http.StatusOK, rec.Code)
 	}
