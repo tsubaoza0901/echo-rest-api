@@ -27,9 +27,4 @@ jobs:
 
     steps:
       - checkout
-      - run:
-        name: Wait for db
-        command: dockerize -wait tcp://localhost:3306 -timeout 1m -wait-retry-interval 5s
-      
-      - run: go get ./...
-      - run: go test -v ./...
+      - run: echo "hello world"
