@@ -14,7 +14,7 @@ executors:
           MYSQL_DATABASE: ${MYSQL_DATABASE}
           MYSQL_USER: ${MYSQL_USER}
           MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/server_side
 commands:
   go_mod_download:
     steps:
@@ -58,7 +58,7 @@ jobs:
       - run:
           name: Run Tests
           command: go test -race -v ./...
-          
+
 workflows:
   golang-workflow:
     jobs:
