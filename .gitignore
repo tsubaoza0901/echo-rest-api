@@ -15,9 +15,7 @@
 # vendor/
 
 mysql_data
-mysql_testdata
 
-server_side/server_side
 server_side/lastupdate.tmp
 server_side/logs
 
