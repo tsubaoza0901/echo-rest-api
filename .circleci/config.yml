@@ -14,7 +14,7 @@ executors:
           MYSQL_DATABASE: ${MYSQL_DATABASE}
           MYSQL_USER: ${MYSQL_USER}
           MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    working_directory: /go/src/app/server_side
+    # working_directory: /go/src/app/server_side
 commands:
   go_mod_download:
     steps:
