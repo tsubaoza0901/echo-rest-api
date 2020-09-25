@@ -14,28 +14,11 @@ executors:
           MYSQL_DATABASE: ${MYSQL_DATABASE}
           MYSQL_USER: ${MYSQL_USER}
           MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    working_directory: ~/server_side
-commands:
-  go_mod_download:
-    steps:
-      - restore_cache:
-          name: Restore go modules cache
-          keys:
-            - go-modules-{{ checksum "go.sum" }}
-
-      - run: go mod download
-
-      - save_cache:
-          name: Save go modules cache
-          key: go-modules-{{ checksum "go.sum" }}
-          paths:
-            - "/go/pkg/mod"
+    working_directory: /go/src/app
 jobs:
   build:
     parameters:
       go-version:
-        type: string
-      golangci-lint-version:
         type: string
 
     executor:
@@ -44,17 +27,9 @@ jobs:
 
     steps:
       - checkout
-      - go_mod_download
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
-      - run:
-          name: Install GolangCI-Lint
-          command: curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s v<< parameters.golangci-lint-version >>
-
-      - run:
-          name: Run GolangCI-Lint
-          command: ./bin/golangci-lint run --tests --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck
       - run:
           name: Run Tests
           command: go test -race -v ./...
@@ -64,4 +39,3 @@ workflows:
     jobs:
       - build:
           go-version: "1.12.1"
-          golangci-lint-version: "1.15.0"
