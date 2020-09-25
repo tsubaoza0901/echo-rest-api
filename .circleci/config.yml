@@ -28,12 +28,11 @@ jobs:
     steps:
       - checkout
       - run:
-        name: MySQL が準備できるまで待機
-        command: |
-          for i in `seq 1 10`;
-          do
-            nc -z 127.0.0.1 3306 && echo Success && exit 0
-            echo -n .
-            sleep 1
-          done
-          echo Failed waiting for MySQL && exit 1
+        name: Wait for DB
+        command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
+
+    # - run: go get -v -t -d ./...
+
+    # - run:
+    #     name: Unit test
+    #     command: go test -v ./...
