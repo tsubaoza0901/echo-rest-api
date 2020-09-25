@@ -28,8 +28,8 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Wait for DB
-        command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
 
     # - run: go get -v -t -d ./...
 
