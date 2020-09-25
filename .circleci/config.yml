@@ -6,13 +6,15 @@ executors:
         type: string
     docker:
       - image: circleci/golang:<< parameters.go-version >>
+        environment:
+          GO111MODULE: "on"
       - image: circleci/mysql:5.7.22
         environment:
           MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
           MYSQL_DATABASE: ${MYSQL_DATABASE}
           MYSQL_USER: ${MYSQL_USER}
           MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    working_directory: /go/src
+    working_directory: /go/src/github.com/tsubaoza0901/echo-rest-api
 jobs:
   build:
     parameters:
@@ -28,7 +30,6 @@ jobs:
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
-      - run: echo "$(pwd) == << pipeline.parameters.go-version >>"
       - run:
           name: Run Tests
           command: go test -v ./server_side
