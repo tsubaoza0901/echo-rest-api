@@ -14,29 +14,29 @@ executors:
           MYSQL_DATABASE: ${MYSQL_DATABASE}
           MYSQL_USER: ${MYSQL_USER}
           MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    # working_directory: /go/src/app/server_side
-commands:
-  go_mod_download:
-    steps:
-      - restore_cache:
-          name: Restore go modules cache
-          keys:
-            - go-modules-{{ checksum "go.sum" }}
+    working_directory: /go/src/app
+# commands:
+#   go_mod_download:
+#     steps:
+#       - restore_cache:
+#           name: Restore go modules cache
+#           keys:
+#             - go-modules-{{ checksum "go.sum" }}
 
-      - run: go mod download
+#       - run: go mod download
 
-      - save_cache:
-          name: Save go modules cache
-          key: go-modules-{{ checksum "go.sum" }}
-          paths:
-            - "/go/pkg/mod"
+#       - save_cache:
+#           name: Save go modules cache
+#           key: go-modules-{{ checksum "go.sum" }}
+#           paths:
+#             - "/go/pkg/mod"
 jobs:
   build:
     parameters:
       go-version:
         type: string
-      golangci-lint-version:
-        type: string
+      # golangci-lint-version:
+      #   type: string
 
     executor:
       name: build
@@ -44,24 +44,24 @@ jobs:
 
     steps:
       - checkout
-      - go_mod_download
+      # - go_mod_download
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
-      - run:
-          name: Install GolangCI-Lint
-          command: curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s v<< parameters.golangci-lint-version >>
+      # - run:
+      #     name: Install GolangCI-Lint
+      #     command: curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s v<< parameters.golangci-lint-version >>
 
-      - run:
-          name: Run GolangCI-Lint
-          command: ./bin/golangci-lint run --tests --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck
+      # - run:
+      #     name: Run GolangCI-Lint
+      #     command: ./bin/golangci-lint run --tests --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck
       - run:
           name: Run Tests
-          command: go test -race -v ./...
+          command: go test -v ../server_side
 
 workflows:
   golang-workflow:
     jobs:
       - build:
           go-version: "1.12.1"
-          golangci-lint-version: "1.15.0"
+          # golangci-lint-version: "1.15.0"
