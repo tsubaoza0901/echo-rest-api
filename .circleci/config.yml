@@ -7,6 +7,12 @@ jobs:
     docker:
       # specify the version
       - image: circleci/golang:1.9
+      - image: circleci/mysql:5.7.0
+        environment:
+          MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+          MYSQL_DATABASE: ${MYSQL_DATABASE}
+          MYSQL_USER: ${MYSQL_USER}
+          MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -18,12 +24,14 @@ jobs:
     ####   /go/src/github.com/circleci/go-tool
     ####   /go/src/bitbucket.org/circleci/go-tool
     working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+
     steps:
       - checkout
-
-      # specify any bash command here prefixed with `run: `
-      - run: 
-        name: テストの実行
-        command:  go test -v
-      # - run: go get -v -t -d ./...
-      # - run: go test -v ./...
+      - run:
+        name: Wait for db
+        command: dockerize -wait tcp://localhost:3306 -timeout 1m -wait-retry-interval 5s
+      
+      - run:
+        name: Run unit tests
+        - run: go get ./...
+        - run: go test -v ./...
