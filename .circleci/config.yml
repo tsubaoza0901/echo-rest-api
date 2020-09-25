@@ -57,7 +57,7 @@ jobs:
       #     command: ./bin/golangci-lint run --tests --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck
       - run:
           name: Run Tests
-          command: go test -v ../server_side
+          command: go test -v ./server_side
 
 workflows:
   golang-workflow:
