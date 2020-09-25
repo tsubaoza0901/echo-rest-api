@@ -24,6 +24,6 @@ jobs:
       # specify any bash command here prefixed with `run: `
       - run: 
         - name: テストの実行
-        - command:  go test -v
+        - command:  go test -v $(go list ./... | circleci tests split)
       # - run: go get -v -t -d ./...
       # - run: go test -v ./...
