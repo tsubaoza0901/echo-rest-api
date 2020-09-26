@@ -12,27 +12,31 @@ executors:
           MYSQL_DATABASE: ${MYSQL_DATABASE}
           MYSQL_USER: ${MYSQL_USER}
           MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    working_directory: /workspace
+    working_directory: /go/src/app
 jobs:
   setup:
     executor:
       name: default-settings
     steps:
-      - run: go env
       - checkout
       - restore_cache:
+          name: Restore go modules cache
           keys:
-          - go-module-cache-v1-{{ checksum "/workspace/go.sum" }}
-          - go-module-cache-v1-
-      - run: go mod download
+              - v1-mod-{{ .Branch }}-{{ checksum "/server_side/go.mod" }}
+      - run:
+          name: Vendoring
+          command: go mod download
       - save_cache:
-          key: go-module-cache-v1-{{ checksum "/workspace/go.sum" }}
+          name: Save go modules cache
+          key: v1-mod-{{ .Branch }}-{{ checksum "/server_side/go.mod" }}
           paths:
-          - /pkg/mod/cache
-      - save_cache:
-          key: workspace-v1-{{ .Environment.CIRCLE_SHA1 }}
+              - /go/pkg/mod/cache
+      - persist_to_workspace:
+          root: /go
           paths:
-          - /workspace
+            - src
+            - bin
+            - pkg/mod/cache
 
   build:
     executor:
