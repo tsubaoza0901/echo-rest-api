@@ -1,6 +1,6 @@
 version: 2.1
 executors:
-  build:
+  my-executor:
     parameters:
       go-version:
         type: string
@@ -14,7 +14,7 @@ executors:
           MYSQL_DATABASE: ${MYSQL_DATABASE}
           MYSQL_USER: ${MYSQL_USER}
           MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    working_directory: /go/src/github.com/tsubaoza0901/echo-rest-api
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/echo-rest-api
 jobs:
   build:
     parameters:
@@ -22,7 +22,7 @@ jobs:
         type: string
 
     executor:
-      name: build
+      name: my-executor
       go-version: << parameters.go-version >>
 
     steps:
@@ -30,9 +30,9 @@ jobs:
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
-      - run:
-          name: Run Tests
-          command: go test -v ./server_side
+      - run: echo "pipeline.project.git_url"
+          # name: Run Tests
+          # command: go test -v ./server_side
 
 workflows:
   golang-workflow:
