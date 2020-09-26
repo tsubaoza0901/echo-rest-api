@@ -22,8 +22,8 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Vendoring
-        command: go mod download
+          name: Vendoring
+          command: go mod download
 
   build:
     executor:
