@@ -17,10 +17,6 @@ executors:
     working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/echo-rest-api
 jobs:
   build:
-    parameters:
-      go-version:
-        type: string
-
     executor:
       name: my-executor
       go-version: << parameters.go-version >>
