@@ -3,6 +3,7 @@ version: 2
 defaults: &defaults
   docker:
     - image: circleci/golang:1.13.5
+      user: root
     - image: circleci/mysql:5.7.22
       environment:
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
