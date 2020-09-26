@@ -32,7 +32,7 @@ jobs:
 workflows:
   golang-workflow:
     jobs:
-      - setup:
+      - setup
       - build:
           requires:
             - setup
