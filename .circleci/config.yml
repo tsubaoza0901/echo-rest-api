@@ -36,10 +36,12 @@ jobs:
           key: workspace-v1-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - /workspace
-
   test:
     <<: *defaults
     steps:
+      - run:
+          name: Install mysql-client
+          command: sudo apt install mysql-client
       - restore_cache:
           keys:
             - workspace-v1-{{ .Environment.CIRCLE_SHA1 }}
@@ -54,7 +56,6 @@ jobs:
             - go-build-cache-v1
       - run:
           name: Wait for DB
-          working_directory: /workspace/server_side
           command: |
             for i in `seq 1 10`;
             do
