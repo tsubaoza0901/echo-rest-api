@@ -3,6 +3,12 @@ version: 2
 defaults: &defaults
   docker:
     - image: golang:stretch
+    - image: circleci/mysql:5.7.22
+      environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
   working_directory: /workspace
   environment:
     GOPATH: /
@@ -15,6 +21,9 @@ jobs:
     steps:
       - run: go env
       - checkout
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
       - restore_cache:
           keys:
             - go-module-cache-v1-{{ checksum "/workspace/server_side/go.sum" }}
