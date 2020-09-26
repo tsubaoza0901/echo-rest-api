@@ -1,9 +1,6 @@
 version: 2.1
 executors:
   default-settings:
-    parameters:
-      go-version:
-        type: string
     docker:
       - image: circleci/golang:1.13.5
         environment:
