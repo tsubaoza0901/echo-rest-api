@@ -1,6 +1,6 @@
 version: 2.1
 executors:
-  my-executor:
+  default-settings:
     parameters:
       go-version:
         type: string
@@ -14,30 +14,40 @@ executors:
           MYSQL_DATABASE: ${MYSQL_DATABASE}
           MYSQL_USER: ${MYSQL_USER}
           MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/echo-rest-api
 jobs:
-  build:
+  setup:
     parameters:
       go-version:
         type: string
 
     executor:
-      name: my-executor
+      name: default-settings
       go-version: << parameters.go-version >>
 
     steps:
       - checkout
-      - go/load-cache
-      - go/mod-download
-      - go/save-cache
-orbs:
-  go: circleci/go@1.4.0
+      - run:
+        name: Vendoring
+        command: go mod download
+
+  build:
+    executor:
+      name: default-settings
+      go-version: << parameters.go-version >>
+
+    steps:
+      - checkout
+      - run: go test -v
 
 workflows:
   golang-workflow:
     jobs:
-      - build:
+      - setup:
           go-version: "1.13.5"
-
+      - build:
+          requires:
+            - setup
 
 
 # version: 2.1
