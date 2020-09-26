@@ -19,7 +19,9 @@ jobs:
           keys:
             - go-module-cache-v1-{{ checksum "/workspace/server_side/go.sum" }}
             - go-module-cache-v1-
-      - run: go mod download
+      - run:
+          working_directory: /workspace/server_side
+          command: go mod download
       - save_cache:
           key: go-module-cache-v1-{{ checksum "/workspace/server_side/go.sum" }}
           paths:
