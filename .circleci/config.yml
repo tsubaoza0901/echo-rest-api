@@ -10,7 +10,7 @@ executors:
           MYSQL_DATABASE: ${MYSQL_DATABASE}
           MYSQL_USER: ${MYSQL_USER}
           MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/echo-rest-api
+    working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}/echo-rest-api/server_side
     environment:
       GO111MODULE: "on"
 jobs:
