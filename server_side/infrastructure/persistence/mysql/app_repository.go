@@ -9,6 +9,7 @@ type appRepository struct {
 	Conn *gorm.DB
 }
 
+// NewAppRepository NewAppRepository関数
 func NewAppRepository(Conn *gorm.DB) repository.AppRepository {
 	return &appRepository{Conn}
 }

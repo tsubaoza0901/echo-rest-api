@@ -26,3 +26,9 @@ func GetMockJob(option ...OptionJob) *model.Job {
 
 // OptionJob ...
 type OptionJob func(b *model.Job)
+
+// GetMockJobs ...
+func GetMockJobs() []*model.Job {
+	i := getMockJob()
+	return []*model.Job{i, i}
+}

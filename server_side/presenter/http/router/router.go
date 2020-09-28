@@ -12,7 +12,7 @@ func InitRouting(e *echo.Echo, h handler.AppHandler) {
 	// Job
 	// e.POST(apiBaseURL+"job", h.CreateJob)
 	e.GET(apiBaseURL+"job/:id", h.GetJob)
-	// e.GET(apiBaseURL+"jobs", h.GetJobs)
+	e.GET(apiBaseURL+"jobs", h.GetJobs)
 	// e.PUT(apiBaseURL+"job/:id", h.UpdateJob)
 	// e.DELETE(apiBaseURL+"job/:id", h.DeleteJob)
 }
