@@ -10,7 +10,8 @@ type JobUseCase struct{}
 
 var (
 	// IsGetJobErr GetJobエラーフラグ
-	IsGetJobErr bool
+	IsGetJobErr  bool
+	IsGetJobsErr bool
 )
 
 func (j *JobUseCase) GetJob(id uint) (*model.Job, error) {
@@ -18,4 +19,11 @@ func (j *JobUseCase) GetJob(id uint) (*model.Job, error) {
 		return nil, errors.New("mock GetJob() err")
 	}
 	return GetMockJob(), nil
+}
+
+func (j *JobUseCase) GetJobs(req *model.JobSearchRequest) ([]*model.Job, error) {
+	if IsGetJobsErr {
+		return nil, errors.New("mock GetJobs() err")
+	}
+	return GetMockJobs(), nil
 }

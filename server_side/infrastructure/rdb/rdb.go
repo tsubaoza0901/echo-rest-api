@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// InitDB InitDB関数
 func InitDB() *gorm.DB {
 	dsn := "root:root@tcp(db:3306)/teamup?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
