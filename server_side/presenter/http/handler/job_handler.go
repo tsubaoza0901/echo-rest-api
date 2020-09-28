@@ -146,7 +146,6 @@ func (h *jobHandler) GetJobs(c echo.Context) error {
 		return c.JSON(http.StatusOK, model.NewAPIResponse(code, err.Error(), nil))
 	}
 	return c.JSON(http.StatusOK, model.NewAPIResponse(0, model.StatusText(model.StatusSuccess), NewJobList(job).Jobs))
-	return c.JSON(http.StatusOK, "OK")
 }
 
 // // CreateJob ...
