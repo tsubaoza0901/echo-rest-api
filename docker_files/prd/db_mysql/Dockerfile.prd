@@ -1,0 +1,6 @@
+FROM mysql:5.7
+
+COPY ./docker_files/dev/db_mysql/mysql_init /docker-entrypoint-initdb.d
+COPY ./docker_files/dev/db_mysql/mysql_data /var/lib/mysql
+
+EXPOSE 3306
