@@ -3,7 +3,7 @@
 CREATE TABLE IF NOT EXISTS jobs (
     id int(11) NOT NULL AUTO_INCREMENT,
     created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+    updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at datetime DEFAULT NULL,
     job_title varchar(128) NOT NULL COMMENT "案件タイトル",
     recruitment_numbers int(11) NOT NULL COMMENT "案件募集人数",

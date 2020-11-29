@@ -19,6 +19,7 @@ var pLogger *zap.Logger
 var IsDebug = false
 
 // WithContext WithContext関数
+// 役割：
 func WithContext(ctx context.Context) *zap.Logger {
 	if ctxLogger, ok := ctx.Value(loggerKey).(*zap.Logger); ok {
 		return ctxLogger

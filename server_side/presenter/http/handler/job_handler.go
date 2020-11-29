@@ -39,6 +39,7 @@ type JobList struct {
 type JobHandler interface {
 	GetJob(c echo.Context) error
 	GetJobs(c echo.Context) error
+	CreateJob(c echo.Context) error
 	// CreateJob()
 	// UpdateJob()
 	// DeleteJob()
@@ -148,12 +149,12 @@ func (h *jobHandler) GetJobs(c echo.Context) error {
 	return c.JSON(http.StatusOK, model.NewAPIResponse(0, model.StatusText(model.StatusSuccess), NewJobList(job).Jobs))
 }
 
-// // CreateJob ...
-// func CreateJob(c echo.Context) error {
-// 	name := c.FormValue("name")
-// 	email := c.FormValue("email")
-// 	return c.String(http.StatusOK, "You can CreateJob!! "+"Name:"+name+",Email:"+email)
-// }
+// CreateJob ...
+func (h *jobHandler) CreateJob(c echo.Context) error {
+	name := c.FormValue("name")
+	email := c.FormValue("email")
+	return c.String(http.StatusOK, "You can CreateJob!! "+"Name:"+name+",Email:"+email)
+}
 
 // // UpdateJob ...
 // func UpdateJob(c echo.Context) error {

@@ -1,33 +1,49 @@
 version: '3'
+
+volumes:
+  mysql-db-init:
+  mysql-db-data:
+
 services:
   db:
     build:
-      context: ./docker_files/db_mysql
+      context: ./docker_files/dev/db_mysql
+      dockerfile: Dockerfile # Dockerfileという名称であれば指定しなくても良いが、今後名称変更の可能性があるため一応指定
     container_name: echo_db
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     restart: on-failure:5
+    # environment:
+    #   DB_HOST: ${DB_HOST}
+    #   DB_USER: ${DB_USER}
+    #   DB_PASSWORD: ${DB_PASSWORD}
+    #   DB_NAME: ${DB_NAME}
     ports:
       - '3306:3306'
     tty: true
+    # volumes:
+    #   - ./docker_files/dev/db_mysql/mysql_init:/docker-entrypoint-initdb.d
+    #   - ./docker_files/dev/db_mysql/mysql_data:/var/lib/mysql
     volumes:
-      - ./docker_files/db_mysql/mysql_init:/docker-entrypoint-initdb.d
-      - ./docker_files/db_mysql/mysql_data:/var/lib/mysql
+      - mysql-db-init:/docker-entrypoint-initdb.d
+      - mysql-db-data:/var/lib/mysql
     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --skip-character-set-client-handshake
     networks:
       - echonet
   golang:
     build:
-      context: ./docker_files/go
+      context: ./docker_files/dev/go
+      dockerfile: Dockerfile # Dockerfileという名称であれば指定しなくても良いが、今後名称変更の可能性があるため一応指定
     container_name: echo_server
     volumes:
       - '.:/go/src/app'
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
     ports:
-      - '9000:8080'
+      - '8080:8080'
     tty: true
+    stdin_open: true
     depends_on:
       - db
     networks:
