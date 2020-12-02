@@ -10,6 +10,17 @@ import (
 
 // InitDB InitDB関数
 func InitDB() *gorm.DB {
+	// Heroku用に一時的に追加
+	if os.Getenv("DATABASE_URL") != "" {
+		dbURL := os.Getenv("DATABASE_URL")
+
+		db, err := gorm.Open(mysql.Open(dbURL), &gorm.Config{})
+		if err != nil {
+			log.Fatal(err)
+		}
+		return db
+	}
+
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbHost := os.Getenv("DB_HOST")

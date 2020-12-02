@@ -1,3 +1,7 @@
+production:
+  driver: mymysql
+  open: $GOOSE_CONNECTION
+
 development:
   driver: mymysql
   open: tcp:db:3306*teamup/root/root

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/labstack/echo"
 	"github.com/tsubaoza0901/echo-rest-api/infrastructure/rdb"
 	"github.com/tsubaoza0901/echo-rest-api/interactor"
@@ -33,12 +35,21 @@ func main() {
 	// ルーティングをセット
 	router.InitRouting(e, h)
 
-	// サーバー起動
-	e.Start(":8080")
+	// Heroku用設定
+	if os.Getenv("PORT") != "" {
+		e.Start(":" + os.Getenv("PORT"))
+	} else {
+		e.Start(":8080")
+	}
+
+	// // 通常用：サーバー起動
+	// e.Start(":8080")
+
+	// // Heroku用：サーバー起動
+	// e.Start(":" + os.Getenv("PORT"))
 }
 
-
-// 以下、初期ECS確認用---------------------------------
+// // 以下、初期ECS確認用---------------------------------
 
 // package main
 
@@ -46,6 +57,7 @@ func main() {
 // 	"fmt"
 // 	"log"
 // 	"net/http"
+// 	"os"
 // 	"time"
 
 // 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -101,6 +113,55 @@ func main() {
 // 	mux.HandleFunc("/", helloWorld)
 // 	mux.HandleFunc("/bye", byeWorld)
 // 	mux.Handle("/metrics", metrics)
-// 	http.ListenAndServe(":8080", RequestLogger(mux))
+// 	// fmt.Printf("Starting server at Port %d", strconv.Atoi(os.Getenv("PORT")))
+// 	http.ListenAndServe(":"+os.Getenv("PORT"), RequestLogger(mux))
+
+// 	// Herokuを使わない場合は以下でOK-------------
+// 	// metrics := promhttp.Handler()
+// 	// mux := http.NewServeMux()
+// 	// mux.HandleFunc("/", helloWorld)
+// 	// mux.HandleFunc("/bye", byeWorld)
+// 	// mux.Handle("/metrics", metrics)
+// 	// http.ListenAndServe(":8080", RequestLogger(mux))
 // }
 
+// // echoテスト用------------------------------
+
+// package main
+
+// import (
+// 	"net/http"
+// 	"os"
+
+// 	"github.com/labstack/echo"
+// )
+
+// // Book ...
+// type Book struct {
+// 	Title  string `json:"title"`
+// 	Author string `json:"author"`
+// }
+
+// func main() {
+// 	// Echo インスタンスをNew
+// 	e := echo.New()
+
+// 	// ルーティング設定
+// 	e.GET("/books/:id", bookHandler)
+
+// 	// サーバ起動
+// 	e.Start(":" + os.Getenv("PORT"))
+// }
+
+// // ハンドラ
+// func bookHandler(c echo.Context) error {
+// 	return c.JSON(http.StatusOK, getBook())
+// }
+
+// func getBook() *Book {
+// 	b := &Book{
+// 		Title:  "Golangの本",
+// 		Author: "Golangの本の著者",
+// 	}
+// 	return b
+// }

@@ -1,3 +1,5 @@
+# Herokuデプロイ用
+
 FROM golang:latest as builder
 
 # Application working directory ( Created if it doesn't exist )
@@ -38,5 +40,5 @@ COPY --from=builder /go/src/app/server_side/main /app/
 # Expose port to host
 EXPOSE 8080
 
-# Run software with any arguments
-ENTRYPOINT ["./main"]
+# Heroku用：Run software with any arguments
+ENTRYPOINT ./main $PORT
